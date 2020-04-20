@@ -16,7 +16,7 @@ python manage.py runserver
 
 - Initial commit
 
-**Changes**
+**TODO**
 - Allow filter by month/date range
 - Generate receipt
 - Export report (monthly/complete)
