@@ -1,0 +1,51 @@
+{% extends "accounts/base.html" %}
+{% load render_table from django_tables2 %}
+{% block content %}
+
+<div class="container">   
+<div class="card">
+    <div class="card-header">
+        <h3>Transaction</h1>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            {% if object.transact_date %}
+                <tr>
+                    <th>Transaction Date:</th>
+                    <td>{{ object.transact_date | date:'d-m-Y' }}</td>
+                </tr>
+            {% endif %}
+            {% if object.owner %}
+                <tr>
+                    <th>Transaction Owner:</th>
+                    <td>{{ object.owner }}</td>
+                </tr>
+            {% endif %}
+            {% if object.creator %}
+                <tr>
+                    <th>Transaction Creator:</th>
+                    <td>{{ object.creator }}</td>
+                </tr>
+            {% endif %}
+        </table>
+
+        {% render_table table %}
+        
+        <div>
+            {% comment %} <div class="btn-group">
+                <a class="btn btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Generate PDF
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item" href="{% url 'invoices:invoice_generate' pk=object.invoice_id pdf_type='quot' %}" target="_blank">Quotation</a>
+                    <a class="dropdown-item" href="{% url 'invoices:invoice_generate' pk=object.invoice_id pdf_type='so' %}" target="_blank">Sales Order</a>
+                    <a class="dropdown-item" href="#" onclick="window.open('{% url 'invoices:invoice_generate' pk=object.invoice_id pdf_type='inv' %}');
+    window.open('{% url 'invoices:invoice_generate' pk=object.invoice_id pdf_type='do' %}');">Invoice & Delivery Order</a>
+                </div>
+            </div> {% endcomment %}
+            <a class="btn btn-info" href="{% url 'accounts:transaction_update' pk=object.transact_id %}">Update</a>
+            <a class="btn btn-danger" href="{% url 'accounts:transaction_delete' pk=object.transact_id %}">Delete</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}

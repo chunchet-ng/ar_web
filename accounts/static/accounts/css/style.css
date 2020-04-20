@@ -1,0 +1,7 @@
+.table#detail {border-collapse:collapse;border-spacing:0;border:0 none;}
+/* fix padding of TD to suit your needs */
+.table td#detail {border:0 none;padding:2px;text-align:left;}
+div.table-container table tfoot tr td.bold_large{ font-weight: bold; font-size: medium;background-color:rgba(0,0,0,.03);}
+div.table-container table tfoot tr td:first-child {
+    margin-top:20px;
+  }

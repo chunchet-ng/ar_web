@@ -1,0 +1,41 @@
+{% extends "base_generic.html" %}
+{% block content %}
+
+  {% comment %} {% if form.errors %}
+    <p>Your username and password didn't match. Please try again.</p>
+  {% endif %}
+  
+  {% if next %}
+    {% if user.is_authenticated %}
+      <p>Your account doesn't have access to this page. To proceed,
+      please login with an account that has access.</p>
+    {% else %}
+      <p>Please login to see this page.</p>
+    {% endif %}
+  {% endif %}
+    
+  {% comment %} from https://bootsnipp.com/snippets/dldxB {% endcomment %}
+  <div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Login Form -->
+       <div class="fadeIn first">
+        <h2>Login Form</h2>
+      </div>
+      
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <input type="text" id="username" class="fadeIn second" name="username" placeholder="Username" required>
+        <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password" required>
+        <input type="submit" class="fadeIn fourth" value="Log In">
+        <input type="hidden" name="next" value="{{ next }}" />
+      </form>
+
+      {% if form.errors %}
+        <div class="alert alert-danger" id="formFooter" role="alert">
+          Your username and password didn't match.<br />Please try again.
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  
+{% endblock %}
