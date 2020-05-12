@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     'dynamic_formsets',
     'django_filters',
     'django_tables2',
-    'django_celery_beat'
 ]
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
