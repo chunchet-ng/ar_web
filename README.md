@@ -1,9 +1,13 @@
 # AR web application
 
+This is a web application for Buddhist NGOs to keep track of the allowable requisites. It is for the use of NON-COMMERCIAL purposes only.  
+
 ## Useful commands
 
+Create a new conda environment based on the requirements file.
+
 ```sh
-conda activate django
+conda activate "env_name"
 python manage.py makemigrations
 python manage.py migrate
 python manage.py collectstatic
@@ -16,7 +20,7 @@ python manage.py runserver
 
 - Initial commit
 
-## 20/4/2020
+## 12/5/2020
 
 **Changes**
 - Allow filter by month/date range
