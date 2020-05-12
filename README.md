@@ -7,6 +7,7 @@ This is a web application for Buddhist NGOs to keep track of the allowable requi
 Create a new conda environment based on the requirements file.
 
 ```sh
+conda env create -f "file_name"
 conda activate "env_name"
 python manage.py makemigrations
 python manage.py migrate
