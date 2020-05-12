@@ -1,0 +1,43 @@
+/* https://stackoverflow.com/questions/1763639/how-to-deal-with-page-breaks-when-printing-a-large-html-table
+https://stackoverflow.com/questions/1542320/margin-while-printing-html-page?noredirect=1&lq=1
+https://stackoverflow.com/questions/37033766/css-print-a-custom-sized-page-margin-when-the-content-is-on-multiple-pages?answertab=active#tab-top */
+@charset "UTF-8";
+@media print 
+{
+    @page {
+      size: A4;
+      margin:5mm;
+    }
+    html body {
+      font-size: 15px;
+      line-height: 20px;
+      color: black;
+      width: 21cm;
+      height: 29.7cm;
+      padding: 0;
+      margin: 0;
+      font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+    #action{
+      display: none;
+    }
+    #print_date{
+      display: inline;
+    }
+    div.buttonHolder{
+      display: none;
+    }
+    div.card-body{
+      padding-bottom:0px;
+      margin-bottom:0px;
+    }
+    div#div_id_transaction__owner{
+      padding-bottom:0px;
+      margin-bottom:0px;
+    }
+
+}
+@media screen
+{
+    #print_date{display:none;}
+}

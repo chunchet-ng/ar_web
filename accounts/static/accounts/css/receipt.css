@@ -1,0 +1,83 @@
+/* https://stackoverflow.com/questions/1763639/how-to-deal-with-page-breaks-when-printing-a-large-html-table
+https://stackoverflow.com/questions/1542320/margin-while-printing-html-page?noredirect=1&lq=1
+https://stackoverflow.com/questions/37033766/css-print-a-custom-sized-page-margin-when-the-content-is-on-multiple-pages?answertab=active#tab-top */
+@charset "UTF-8";
+@media print 
+{
+    @page {
+      size: A4;
+      margin:5mm;
+    }
+    thead { display:table-header-group }
+    html body {
+      font-size: 15px;
+      line-height: 20px;
+      color: black;
+      width: 21cm;
+      height: 29.7cm;
+      padding: 0;
+      margin: 0;
+      font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+    html body table.report-container {
+      padding: 15px;
+      border: none;
+      box-shadow: none;
+    }
+    html body table.report-container {
+      display: table;
+    }
+    html body thead.report-header {
+      display:table-header-group;
+      top: 0mm;
+      width: 100%;
+    }
+    #print {
+      display :  none;
+    }
+    hr.line {
+      display :  block;
+    }
+}
+
+@media screen {
+  hr.line { display:none; }
+}
+
+*{
+  font-size: 15px;
+  line-height: 20px;
+  color: black;
+  font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+}
+table.report-container{
+  max-width: 800px;
+  margin: auto;
+  padding: 15px;
+  border: 1px solid #eee;
+  box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+}
+.report-box table {
+  table-layout:fixed;
+  width: 100%;
+  line-height: inherit;
+  text-align: left;
+}
+.report-box table td {
+  padding: 5px;
+  vertical-align: top;
+}
+input[type=text], div.fake_form {
+  background: #eee;
+  border: 0;
+  border-bottom: 1px dotted #888;
+  color: black; }
+
+input[type=text].inputted {
+  color: black;
+  border-bottom: 0;
+  background: transparent; }
+
+div.fake_form {
+  display: inline-block;
+  visibility: collapse; }

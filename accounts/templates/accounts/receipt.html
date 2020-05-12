@@ -1,0 +1,77 @@
+{% load static %}
+{% load custom_tag %}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>{{ filename }}</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/receipt.css' %}">
+</head>
+<body>
+    <table class="report-container">
+        <thead class="report-header">
+        <tr>
+            <th class="report-header-cell">
+            <div>
+                Offering of Allowable Requisite 供养如法资具
+            </div>
+            </th>
+        </tr>
+        </thead>
+        <tbody class="report-content">
+        <tr>
+            <td class="report-content-cell">
+                <div class="main">
+                    <div class="report-box">
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td>
+                                    <b style="float:left">Ref. No.: {{ filename }}</b>
+                                    <b style="float:right">Date: {{ date }}</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {{ name }},
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>I/We, <input type="text" value="Enter donor's name" name="donor_eng"> wish to offer {{ name }} the allowable requisites to the value of RM {{ amount }}.</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>If you need any allowable requisites, please request them from your kappiya <input type="text" value="Enter kappiya's name" name="kpy_eng">.</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>我/我们, <input type="text" value="Enter donor's name" name="donor_ch" required> 想供养您如法必需品，价值相当于 RM {{ amount }}.</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div>如果您有任何需要，请向 <input type="text" value="Enter kappiya's name" name="kpy_ch"> 索取。</div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p style="text-align:center;margin:5px;font-weight: bold;">Sādhu Sādhu Sādhu</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <hr style="border: 1px dashed black;" class="line"/>
+    <div style="text-align: center; padding-top: 20px">
+        <input id="print" type="button" value="Print" onclick="window.print()" style="width: 90px;height: 40px;">
+    </div>
+</body>
+<script src="{% static 'accounts/js/jquery.min.js' %}"></script>
+<script src="{% static 'accounts/js/receipt.js' %}"></script>
+</html>

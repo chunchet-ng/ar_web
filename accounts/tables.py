@@ -5,23 +5,22 @@ from django.utils.html import format_html
 
 class TransactionDetailSearchTable(tables.Table):
     action = tables.LinkColumn('accounts:transaction_detail', text='View', kwargs={'pk': A('transaction__transact_id')}, \
-                         orderable=False, empty_values=(), attrs={"a": {"class": "btn btn-outline-info"}})
+    orderable=False, empty_values=(), attrs={"a": {"class": "btn btn-outline-success"}, "td": {"align":"center"}, "th": {"style":"text-align:center"}})
 
     transaction__transact_date = tables.DateColumn(format ='d/m/Y')
 
     class Meta:
-        # model = Product
-        # template_name = 'django_tables2/bootstrap4.html'
-        # empty_text = 'No record found'
-        # fields = ['invoice__invoice_reference', 'invoice__invoice_date', 'invoice__customer_name' 
-        # ,'invoice__customer_phone','invoice__customer_email','invoice__customer_address','product_desc']
-
         model = TransactionDetails
         template_name = 'django_tables2/bootstrap4.html'
         empty_text = 'No record found'
         fields = ['transaction__transact_date', 'transactDet_desc', 'transaction__owner', 'transaction__creator']
 
 class TransactionDetailTable(tables.Table):
+
+    action = tables.LinkColumn('accounts:generate_receipt', text='Print', kwargs={'pk': A('transactDet_id')},
+    orderable=False, empty_values=(), 
+    attrs={"a": {"class": "btn btn-outline-success"},
+    "tf": {"class": "bold_large", "align":"right"}, "td": {"align":"right"}, "th": {"style":"text-align:right"}})
     
     # https://stackoverflow.com/questions/49854515/using-django-tables-2-how-do-you-cut-off-a-long-text-field-with-an-ellipsis
     transactDet_desc = tables.TemplateColumn('<data-toggle="tooltip" title="{{record.transactDet_desc}}">{{record.transactDet_desc|truncatechars:10}}', footer="Total", attrs={"tf": {"class": "bold_large"}})
@@ -29,7 +28,7 @@ class TransactionDetailTable(tables.Table):
     rm = tables.Column(
         footer=lambda table: round(sum(x.rm for x in table.data if x.rm), 2),
         empty_values=["0.00"],
-        attrs={"tf": {"class": "bold_large"}}
+        attrs={"tf": {"class": "bold_large", "align":"right"}, "td": {"align":"right"}, "th": {"style":"text-align:right"}}
     )
 
     def render_rm(self, record):
@@ -41,7 +40,7 @@ class TransactionDetailTable(tables.Table):
     usd = tables.Column(
         footer=lambda table: round(sum(x.usd for x in table.data if x.usd), 2),
         empty_values=["0.00"],
-        attrs={"tf": {"class": "bold_large"}}
+        attrs={"tf": {"class": "bold_large", "align":"right"}, "td": {"align":"right"}, "th": {"style":"text-align:right"}}
     )
 
     def render_usd(self, record):
@@ -53,7 +52,7 @@ class TransactionDetailTable(tables.Table):
     rmb = tables.Column(
         footer=lambda table: round(sum(x.rmb for x in table.data if x.rmb), 2),
         empty_values=["0.00"],
-        attrs={"tf": {"class": "bold_large"}}
+        attrs={"tf": {"class": "bold_large", "align":"right"}, "td": {"align":"right"}, "th": {"style":"text-align:right"}}
     )
 
     def render_rmb(self, record):
@@ -62,17 +61,6 @@ class TransactionDetailTable(tables.Table):
         else:
             return "0.00"
 
-    # def render_discounted(self, record):
-    #     if (record.product_unit_price and record.product_quantity):
-    #         if record.product_unit_disc != None:
-    #             value = record.product_unit_price * record.product_quantity * (1 - record.product_unit_disc/100)
-    #             return '{:0.2f}'.format(value)
-    #         else:
-    #             value = record.product_unit_price * record.product_quantity
-    #             return '{:0.2f}'.format(value)
-    #     else:
-    #         return 0
-
     class Meta:
         model = TransactionDetails
         template_name = 'django_tables2/bootstrap4.html'
@@ -80,16 +68,21 @@ class TransactionDetailTable(tables.Table):
         orderable=False
 
 class MonthlyReportTable(tables.Table):
+
+    action = tables.LinkColumn('accounts:generate_receipt', text='Print', kwargs={'pk': A('transactDet_id')},
+    orderable=False, empty_values=(), 
+    attrs={"a": {"class": "btn btn-outline-success"},
+    "tf": {"class": "bold_large", "align":"right","id":"action"}, "td": {"align":"right","id":"action"}, "th": {"style":"text-align:right","id":"action"}})
     
     transaction__transact_date = tables.DateColumn(format ='d/m/Y', footer="Total", attrs={"tf": {"class": "bold_large"}})
 
     # https://stackoverflow.com/questions/49854515/using-django-tables-2-how-do-you-cut-off-a-long-text-field-with-an-ellipsis
-    transactDet_desc = tables.TemplateColumn('<data-toggle="tooltip" title="{{record.transactDet_desc}}">{{record.transactDet_desc|truncatechars:10}}', attrs={"tf": {"class": "bold_large"}})
+    transactDet_desc = tables.TemplateColumn('<data-toggle="tooltip" title="{{record.transactDet_desc}}">{{record.transactDet_desc|truncatechars:20}}', attrs={"tf": {"class": "bold_large"}})
 
     rm = tables.Column(
         footer=lambda table: round(sum(x.rm for x in table.data if x.rm), 2),
         empty_values=["0.00"],
-        attrs={"tf": {"class": "bold_large"}}
+        attrs={"tf": {"class": "bold_large", "align":"right"}, "td": {"align":"right"}, "th": {"style":"text-align:right"}}
     )
 
     def render_rm(self, record):
@@ -101,7 +94,7 @@ class MonthlyReportTable(tables.Table):
     usd = tables.Column(
         footer=lambda table: round(sum(x.usd for x in table.data if x.usd), 2),
         empty_values=["0.00"],
-        attrs={"tf": {"class": "bold_large"}}
+        attrs={"tf": {"class": "bold_large", "align":"right"}, "td": {"align":"right"}, "th": {"style":"text-align:right"}}
     )
 
     def render_usd(self, record):
@@ -113,7 +106,7 @@ class MonthlyReportTable(tables.Table):
     rmb = tables.Column(
         footer=lambda table: round(sum(x.rmb for x in table.data if x.rmb), 2),
         empty_values=["0.00"],
-        attrs={"tf": {"class": "bold_large"}}
+        attrs={"tf": {"class": "bold_large", "align":"right"}, "td": {"align":"right"}, "th": {"style":"text-align:right"}}
     )
 
     def render_rmb(self, record):

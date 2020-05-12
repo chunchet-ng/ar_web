@@ -5,6 +5,12 @@
 {{ formset.management_form|crispy }}
 
     {% for form in formset.forms %}
+        <tr>
+            <td></td>
+            <td colspan="3" align="center">Allowable Requisite Eqv. To</td>
+            <td></td>
+            <td></td>
+        </tr>
         <tr class="{% cycle 'row1' 'row2' %} formset_row-{{ formset.prefix }}">
             {% for field in form.visible_fields %}
                 <td>
@@ -27,8 +33,8 @@
 <script src="{% static 'accounts/libraries/django-dynamic-formset/jquery.formset.js' %}"></script>
 <script type="text/javascript">
     $('.formset_row-{{ formset.prefix }}').formset({
-        addText: 'add product',
-        deleteText: 'remove',
+        addText: 'Add Record',
+        deleteText: 'Remove',
         prefix: '{{ formset.prefix }}',
         addCssClass: 'btn btn-outline-primary btn-sm',
         deleteCssClass: 'btn btn-outline-danger btn-sm',

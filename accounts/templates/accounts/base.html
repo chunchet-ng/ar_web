@@ -9,6 +9,8 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/style.css' %}">
+    {% block css %}
+    {% endblock %}
     <title>Allowable Requisite System</title>
   </head>
   <body>
@@ -26,7 +28,7 @@
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <a class="dropdown-item {% if request.resolver_match.url_name == 'transaction_create' %}active{% endif %}" href="{% url 'accounts:transaction_create' %}">Create Transaction</a>
-                <a class="dropdown-item {% if request.resolver_match.url_name == 'monthly_report' %}active{% endif %}" href="{% url 'accounts:transaction_report' %}">Monthly Report</a>
+                <a class="dropdown-item {% if request.resolver_match.url_name == 'monthly_report' %}active{% endif %}" href="{% url 'accounts:transaction_report' %}">Report</a>
               </div>
             </li>
             <li class="nav-item dropdown" active>
@@ -55,9 +57,9 @@
     <script src="{% static 'bootstrap/js/jquery-3.4.1.slim.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-
+    
     {% block js %}
     
-    {% endblock js %}
+    {% endblock %}
   </body>
 </html>

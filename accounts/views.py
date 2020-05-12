@@ -19,7 +19,6 @@ from .models import Profile
 from django.db.models import Q
 from calendar import monthrange
 from datetime import date
-from .utils import int2words
 
 from .tables import *
 from .models import *
@@ -109,92 +108,33 @@ class TransactionUpdate(UpdateView):
 class TransactionDelete(DeleteView):
     model = Transaction
     template_name = 'accounts/confirm_delete.html'
-#     success_url = reverse_lazy('invoices:invoice_search')
 
 # ##########################################################################
 # #                           Generate pdf                             #
 # ##########################################################################
 
-# # https://gist.github.com/pikhovkin/5642563
-# # https://github.com/Kozea/WeasyPrint/issues/92
-# def get_invoice(request, pk, pdf_type):
-#     invoice = get_object_or_404(Invoice, pk=pk)
-#     subtotal_arr, subtotal, total_discounted, total = calc_total(invoice.has_products.all(), invoice.proj_disc)
-#     title = ''
-#     if pdf_type == 'inv':
-#         title = 'Invoice'
-#     elif pdf_type == 'do':
-#         title = 'Delivery Order'
-#     elif pdf_type == 'quot':
-#         title = 'Quotation'
-#     elif pdf_type == 'so':
-#         title = 'Sales Order'
-#     else:
-#         return HttpResponseNotFound('<h1>Invalid pdf type!</h1>') 
-
-#     manual_ref_arr = []
-#     if invoice.manual_ref1:
-#         manual_ref_arr.append(invoice.manual_ref1.strip())
-#     if invoice.manual_ref2:
-#         manual_ref_arr.append(invoice.manual_ref2.strip())
-
-#     html = loader.render_to_string("invoices/invoice_template_v2.html", {
-#         'object': invoice,
-#         'subtotal_arr': subtotal_arr,
-#         'subtotal': subtotal,
-#         'total': total,
-#         'total_discounted': total_discounted,
-#         'today': get_date(),
-#         'title': title,
-#         'filename': '{}_{}'.format(invoice.invoice_reference, pdf_type),
-#         'manual_ref_arr': manual_ref_arr,
-#     })
-#     # css = CSS(settings.STATIC_ROOT +  '/invoices/css/invoice_v2.css')
-#     # pdf_file = HTML(string=html).write_pdf(stylesheets=[css])
-#     # response = HttpResponse(pdf_file, content_type='application/pdf')
-#     # new_pdf = PdfGenerator(main_html=html, base_url=request.build_absolute_uri())
-#     # response = HttpResponse(new_pdf.render_pdf(), content_type="application/pdf")
-#     # response['Content-Disposition'] = "inline; filename={invoice_reference}-invoice.pdf".format(
-#     #     invoice_reference=invoice.invoice_reference,
-#     # )
-#     # return response
-
-#     template = loader.get_template('invoices/invoice_template_v2.html')
-#     first_part = int(total.split('.')[0])
-#     second_part = int(total.split('.')[1])
-#     if second_part == 0:
-#         total_str = int2words(first_part) + ' malaysian ringgit '
-#     else:
-#         total_str = int2words(first_part) + ' malaysian ringgit and ' +int2words(second_part)+' cents' 
-#     context = {
-#         'object': invoice,
-#         'subtotal_arr': subtotal_arr,
-#         'subtotal': subtotal,
-#         'total': total,
-#         'total_discounted': total_discounted,
-#         'today': get_date(),
-#         'title': title,
-#         'filename': '{}_{}'.format(invoice.invoice_reference, pdf_type),
-#         'manual_ref_arr': manual_ref_arr,
-#         'total_str': total_str.title()
-#     }
-#     return HttpResponse(template.render(context, request))
-
-# def calc_total(products, proj_disc):
-#     amount_arr = []
-#     subtotal = 0
-#     total = 0
-#     if len(products) > 0:
-#         for product in products:
-#             amount = product.product_unit_price * product.product_quantity * (1 - product.product_unit_disc/100)
-#             subtotal += amount
-#             amount_arr.append(str(round(amount,2)))
-        
-#         total_discounted = subtotal * (proj_disc/100)
-#         total = subtotal - total_discounted
-#         return amount_arr, str(round(subtotal,2)), str(round(total_discounted,2)), str(round(total,2))
-#     else:
-#         return 0
+# https://gist.github.com/pikhovkin/5642563
+# https://github.com/Kozea/WeasyPrint/issues/92
+def generate_receipt(request, pk):
+    trans_dets = get_object_or_404(TransactionDetails, pk=pk)
+    date_str = date.today().strftime("%d-%m-%Y")
+    trans_date_str = trans_dets.transaction.transact_date.strftime("%Y%m%d")
+    template = loader.get_template('accounts/receipt.html')
+    
+    role_int = trans_dets.transaction.owner.profile.role
+    role = ''
+    if role_int == 1:
+        role = 'Bhante'
+    elif role_int == 2:
+        role = 'Sayalay'
+    
+    context = {
+        'name': role + ' ' + trans_dets.transaction.owner.username,
+        'amount': trans_dets.rm,
+        'date': date_str,
+        'filename': 'ref_{}_{}_{}'.format(trans_date_str,  trans_dets.transaction.transact_id, trans_dets.transactDet_id),
+    }
+    return HttpResponse(template.render(context, request))
 
 ##########################################################################
 #                           Search views                             #
@@ -246,20 +186,12 @@ def signup_view(request):
     return render(request, 'accounts/signup.html', {'form': form})
 
 ##########################################################################
-#                           Debt report views                             #
+#                           Monthly report views                             #
 ##########################################################################
 
 class MonthlyReportView(ListView):
     template_name = 'accounts/monthly_report.html'
-    
     def get(self, request):
-        # today = date.today()
-        # year = today.year
-        # month = today.month
-        # criterion1 = Q(transaction__transact_date__month=month)
-        # # criterion2 = ~Q(invoice_status__exact="Completed")
-        # transactionDetails_list = TransactionDetails.objects.filter(criterion1)
-        # transactionDetails_filter = MonthlyReportFilter(request.GET, queryset=transactionDetails_list)
         transactionDetails_list = TransactionDetails.objects.all()
         transactionDetails_filter = MonthlyReportFilter(request.GET, queryset=transactionDetails_list)
 
@@ -275,8 +207,10 @@ class MonthlyReportView(ListView):
         #populate result table with pagination
         result_table = MonthlyReportTable(transactionDetails_filter.qs)
         RequestConfig(request).configure(result_table)
+        date_str = date.today().strftime("%d-%m-%Y")
 
         return render(request, self.template_name, {
             'filter': transactionDetails_filter,
             'table': result_table,
+            'date': date_str,
         })

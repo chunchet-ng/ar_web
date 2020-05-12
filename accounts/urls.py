@@ -12,4 +12,5 @@ urlpatterns = [
     path('record/create/', login_required(views.TransactionCreate.as_view()), name='transaction_create'),
     path('record/update/<int:pk>/', login_required(views.TransactionUpdate.as_view()), name='transaction_update'),
     path('record/delete/<int:pk>/', login_required(views.TransactionDelete.as_view()), name='transaction_delete'),
+    path('record/receipt/<int:pk>/', login_required(views.generate_receipt), name='generate_receipt'),
 ]

@@ -28,24 +28,17 @@
                 </tr>
             {% endif %}
         </table>
-
+        <br/>
         {% render_table table %}
         
         <div>
-            {% comment %} <div class="btn-group">
-                <a class="btn btn-success dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Generate PDF
-                </a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="{% url 'invoices:invoice_generate' pk=object.invoice_id pdf_type='quot' %}" target="_blank">Quotation</a>
-                    <a class="dropdown-item" href="{% url 'invoices:invoice_generate' pk=object.invoice_id pdf_type='so' %}" target="_blank">Sales Order</a>
-                    <a class="dropdown-item" href="#" onclick="window.open('{% url 'invoices:invoice_generate' pk=object.invoice_id pdf_type='inv' %}');
-    window.open('{% url 'invoices:invoice_generate' pk=object.invoice_id pdf_type='do' %}');">Invoice & Delivery Order</a>
-                </div>
-            </div> {% endcomment %}
-            <a class="btn btn-info" href="{% url 'accounts:transaction_update' pk=object.transact_id %}">Update</a>
+            <a class="btn btn-primary" href="{% url 'accounts:transaction_update' pk=object.transact_id %}">Update</a>
             <a class="btn btn-danger" href="{% url 'accounts:transaction_delete' pk=object.transact_id %}">Delete</a>
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock %}
+{% block js %}
+  {% load static %}
+  <script src="{% static 'accounts/js/transaction_detail.js' %}"></script>
+{% endblock %}

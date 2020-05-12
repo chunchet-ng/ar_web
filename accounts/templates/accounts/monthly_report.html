@@ -1,21 +1,15 @@
 {% extends "accounts/base.html" %}
 {% load crispy_forms_tags %}
 {% load render_table from django_tables2 %}
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/report.css' %}">
+{% endblock %}
 {% block content %}
-    {% comment %} <div class="container">
-        <div class="card">
-            <div class="card-header">
-                <h3>Monthly Report</h3>
-            </div>
-            <div class="card-body">
-              {% render_table table %}
-            </div>
-        </div>
-    </div> {% endcomment %}
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h3>Monthly Report</h3>
+                <h3>Report <span id="print_date"> generated on {{ date }}</span></h3>
             </div>
             <div class="card-body">
                 <form action="" method="get">
@@ -26,51 +20,7 @@
         <br/>
         {% render_table table %}
     </div>
+{% endblock%}
+{% block js %}
+  <script src="{% static 'accounts/js/report.js' %}"></script>
 {% endblock %}
-
-{% comment %} {% extends "invoices/base.html" %}
-{% load crispy_forms_tags %}
-{% block content %}
-
-<div class="card border-light mb-3">
-  <div class="card-header">Search</div>
-  <div class="card-body">
-    <form method="get">
-    <div class="form-row">
-      <div class="form-group col-md-2">
-        <label for="inputEmail4" class="col-form-label">Invoice Reference</label>
-        {{ filter.invoice__invoice_reference |as_crispy_field }}
-      </div>
-      <div class="form-group col-md-2">
-        <label for="inputEmail4" class="col-form-label">{% trans 'Location' %}</label>
-        {{ filter.location }}
-      </div>
-      <div class="form-group col-md-2">
-        <label for="inputEmail4" class="col-form-label">{% trans 'Author' %}</label>
-        {{ filter.user }}
-      </div>
-      <div class="form-group col-md-3">
-        <label for="inputEmail4" class="col-form-label">{% trans 'Date' %}</label>
-        <div class="input-group mb-3 mb-sm-0">
-        {{ filter.date }}
-        </div>
-      </div>
-      <div class="form-group col-md-2">
-        <label for="inputEmail4" class="col-form-label">{% trans 'Status' %}</label>
-        {{ filter.status }}
-      </div> 
-      <div class="form-group col-md-1">
-        <label for="inputEmail4" class="col-form-label">Actions</label>
-        <button type="submit" class="btn btn-sm btn-primary">Search</button>
-      </div>
-    </div>
-    </form>
-    {% for obj in invoices %}
-        {{ obj.invoice.invoice_reference }} - {{ obj.invoice_date }}<br />
-        {{ obj.customer_name }} - {{ obj.customer_phone }}<br />
-        {{ obj.customer_email }} - {{ obj.customer_address }}<br />
-        {{ obj.product_desc }}<br />
-    {% endfor %}
-  </div>
-</div>
-{% endblock %} {% endcomment %}

@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 class TransactionDetailsForm(forms.ModelForm):
     transactDet_desc = forms.CharField(
-        widget=(forms.Textarea(attrs={'rows':'3', 'cols':'100'}))
+        widget=(forms.Textarea(attrs={'rows':'3', 'cols':'100'})),label='Desc.'
     )
     class Meta:
         model = Transaction
@@ -24,7 +24,7 @@ TransactionDetailsFormSet = inlineformset_factory(
 class TransactionForm(forms.ModelForm):
     
     transact_date = forms.DateField(
-        widget=forms.TextInput(attrs={'type': 'date', 'value': datetime.now().strftime("%Y-%m-%d")})
+        widget=forms.TextInput(attrs={'type': 'date', 'value': datetime.now().strftime("%Y-%m-%d")}),label='Transaction Date'
     )
 
     class Meta:
@@ -65,6 +65,7 @@ class FilterForm(forms.Form):
             Div(
                 Div(
                     Fieldset('Transaction Details',
+                        Field('transaction__transact_id'),
                         Field('transaction__transact_date'),
                         Field('transaction__owner'),
                         Field('transaction__creator'),
@@ -84,6 +85,7 @@ class FilterForm(forms.Form):
 class MonthlyReportForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(MonthlyReportForm, self).__init__(*args, **kwargs)
+        self.fields['transaction__transact_date'].widget.attrs.update({'class': 'form-control'})
         self.helper = FormHelper()
         self.helper.form_tag = True
         self.helper.form_method = 'get'
@@ -93,10 +95,9 @@ class MonthlyReportForm(forms.Form):
                     Fieldset('Transaction Details',
                         Field('transaction__transact_date'),
                         Field('transaction__owner'),
-                        Field('date_range'),
-                        ),
-                        HTML("<br>"),
-                        css_class='col-md-12',),
+                    ),
+                    HTML("<br>"),
+                    css_class='col-md-12',),
                 Div(
                     ButtonHolder(
                         Submit('submit', 'Search'),

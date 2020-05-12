@@ -4,4 +4,22 @@
 div.table-container table tfoot tr td.bold_large{ font-weight: bold; font-size: medium;background-color:rgba(0,0,0,.03);}
 div.table-container table tfoot tr td:first-child {
     margin-top:20px;
-  }
+}
+/* div#div_id_transaction__transact_date div:first-of-type{
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin: auto;
+} */
+/* div#div_id_transaction__transact_date div:first-of-type::before{
+  content: "FROM";
+  font-size: small;
+  padding: 8px;
+} */
+/* input#id_transaction__transact_date_0{
+  margin-right: 15px;
+}
+input#id_transaction__transact_date_1{
+  margin-left: 15px;
+} */
