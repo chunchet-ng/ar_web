@@ -7,14 +7,11 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db import transaction
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.template import loader
-from weasyprint import HTML, CSS
-from weasyprint.fonts import FontConfiguration
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django_tables2.config import RequestConfig
 from crispy_forms.layout import Button, Reset, Submit
 from crispy_forms.layout import HTML as crispy_HTML
-from .pdf import PdfGenerator
 from .models import Profile
 from django.db.models import Q
 from calendar import monthrange

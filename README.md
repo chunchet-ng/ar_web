@@ -4,14 +4,28 @@ This is a web application for Buddhist NGOs to keep track of the allowable requi
 
 ## Useful commands
 
-Create a new conda environment based on the requirements file.
-
+Create a new conda environment based on the requirements file:
 ```sh
 conda env create -f "file_name"
 conda activate "env_name"
+```
+Then, initialise the database with the following commands:
+```sh
 python manage.py makemigrations
-python manage.py migrate
+python manage.py migrate --run-syncdb
 python manage.py collectstatic
+```
+Create a superuser with user profile and run the server:
+```sh
+python manage.py createsuperuser
+python manage.py shell
+
+from accounts.models import Profile
+from django.contrib.auth.models import User
+users_without_profile = User.objects.filter(profile__isnull=True)
+for user in users_without_profile:
+    Profile.objects.create(user=user)
+
 python manage.py runserver                              
 ```
 
