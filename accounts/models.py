@@ -31,7 +31,11 @@ class TransactionDetails(models.Model):
     transaction = models.ForeignKey(Transaction, on_delete = models.CASCADE, related_name="transaction_details")
 
     def __str__(self):
-        return str(self.transactDet_id) 
+        return str(self.transactDet_id)
+    
+    class Meta:
+        verbose_name = 'Transaction Detail'
+        verbose_name_plural = 'Transaction Details'
 
 
 class Profile(models.Model):
