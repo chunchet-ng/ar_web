@@ -9,6 +9,12 @@
     </div>
     <div class="card-body">
         <table class="table">
+            {% if object.transact_id %}
+                <tr>
+                    <th>Transaction ID:</th>
+                    <td>{{ object.transact_id}}</td>
+                </tr>
+            {% endif %}
             {% if object.transact_date %}
                 <tr>
                     <th>Transaction Date:</th>
