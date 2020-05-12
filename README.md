@@ -1,6 +1,6 @@
 # AR web application
 
-This is a web application for Buddhist NGOs to keep track of the allowable requisites. It is for the use of NON-COMMERCIAL purposes only.  
+This is a web application for Buddhist NGOs to keep track of the allowable requisites. NON-COMMERCIAL use only.  
 
 ## Useful commands
 
